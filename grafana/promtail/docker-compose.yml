@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    networks:
+      redis_redis_network:
+        ipv4_address: 172.30.0.12
+    command: -config.file=/etc/promtail/config.yaml
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - promtail-positions:/run/promtail
+      - ../logs:/logs:ro
+
+volumes:
+  promtail-positions:
+
+networks:
+  redis_redis_network:
+    external: true
+    name: redis_redis_network
+
